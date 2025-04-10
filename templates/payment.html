@@ -1,0 +1,267 @@
+{% include 'user_header.html' %}
+<style>
+  .container {
+    padding: 40px 20px;
+  }
+
+  .payment-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    position: relative;
+    width: 380px;
+    height: 230px;
+    background: linear-gradient(45deg, #0045c7, #ff2c7d);
+    border-radius: 15px;
+    padding: 30px;
+    color: white;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+  }
+
+  .chip {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    width: 50px;
+    height: 40px;
+    background: #ffd700;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .chip::before,
+  .chip::after {
+    content: '';
+    position: absolute;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .chip::before {
+    top: 50%;
+    left: -5px;
+    width: 60px;
+    height: 1px;
+  }
+
+  .chip::after {
+    left: 50%;
+    top: -5px;
+    width: 1px;
+    height: 50px;
+  }
+
+  .logo {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  .card-number {
+    position: absolute;
+    top: 130px;
+    left: 30px;
+    letter-spacing: 6px;
+    font-size: 18px;
+    text-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+  }
+
+  .card-holder {
+    position: absolute;
+    bottom: 40px;
+    left: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  .name {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+
+  .valid {
+    position: absolute;
+    bottom: 40px;
+    right: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  .valid-date {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    font-size: 16px;
+  }
+
+  form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    flex: 0 0 480px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  th {
+    width: 40%;
+    color: #555;
+  }
+
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  input[type="submit"] {
+    background: linear-gradient(45deg, #0045c7, #ff2c7d);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 15px;
+  }
+
+  input[type="submit"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .payment-wrapper {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card, form {
+      width: 100%;
+      max-width: 500px;
+    }
+  }
+</style>
+
+<div class="container">
+  <div class="payment-wrapper">
+    <!-- Credit Card Preview -->
+    <div class="card">
+      <div class="logo">VISACARD</div>
+      <div class="chip"></div>
+      <div class="card-number" id="cardNumberDisplay">**** **** **** ****</div>
+      <div class="card-holder">Card Holder</div>
+      <div class="name" id="cardNameDisplay">YOUR NAME</div>
+      <div class="valid">Valid Thru</div>
+      <div class="valid-date">12/28</div>
+    </div>
+
+    <!-- Payment Form -->
+    <form method="post">
+      <table>
+        <tr>
+          <th>Cardholder Name</th>
+          <td><input type="text" id="cardholderName" name="cardholder_name" required></td>
+        </tr>
+        <tr>
+          <th>Card Number</th>
+          <td><input type="text" id="cardNumber" maxlength="19" name="card_number" required></td>
+        </tr>
+        <tr>
+          <th>CVV</th>
+          <td><input type="text" name="cvv" maxlength="3" pattern="\d{3}" required placeholder="123"></td>
+        </tr>
+        <tr>
+          <th>Total Time:</th>
+          <td>{{ days }} Days: {{ hours }} Hours: {{ minutes }} Minutes</td>
+        </tr>
+        <tr>
+          <th>Total Cost:</th>
+          <td>{{ total_cost }}</td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <input type="submit" name="submit" value="Complete Payment">
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+  {% include 'footer.html' %}
+</div>
+
+<script>
+  // Live update card content
+  const nameInput = document.getElementById('cardholderName');
+  const numberInput = document.getElementById('cardNumber');
+  const nameDisplay = document.getElementById('cardNameDisplay');
+  const numberDisplay = document.getElementById('cardNumberDisplay');
+
+  nameInput.addEventListener('input', function () {
+    nameDisplay.textContent = this.value.toUpperCase() || 'YOUR NAME';
+  });
+
+  numberInput.addEventListener('input', function (e) {
+    let value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let formattedValue = '';
+
+    for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formattedValue += ' ';
+      }
+      formattedValue += value[i];
+    }
+
+    this.value = formattedValue;
+
+    if (value.length > 0) {
+      let displayNumber = value.substring(0, 4);
+      if (value.length > 4) {
+        displayNumber += ' **** **** ';
+        if (value.length > 12) {
+          displayNumber += value.substring(12);
+        } else {
+          displayNumber += '****';
+        }
+      } else {
+        displayNumber += ' **** **** ****';
+      }
+      numberDisplay.textContent = displayNumber;
+    } else {
+      numberDisplay.textContent = '**** **** **** ****';
+    }
+  });
+</script>

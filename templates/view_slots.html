@@ -1,0 +1,24 @@
+{% include 'admin_header.html' %}
+
+<br /><br />
+<center>
+    <table style="width: 1200px">
+        <tr>
+            <th>Slot</th>
+            <th>Status</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Location</th>
+        </tr>
+        {% for i in q %}
+        <tr>
+            <td>{{i.slot_description}}</td>
+            <td>{{i.slot_status}}</td>
+            <td>{{i.amount}}</td>
+            <td>{{i.location_id}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+{% include 'footer.html' %}

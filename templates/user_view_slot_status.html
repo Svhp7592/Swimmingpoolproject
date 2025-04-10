@@ -1,0 +1,31 @@
+{% include 'user_header.html' %} <br /><br />
+<center><h1>Slots</h1></center>
+<center>
+    <table style="width: 1200px">
+        <tr>
+            <th>Slot</th>
+            <th>Status</th>
+            <th>Amount</th>
+
+            <th>Location</th>
+            <th>Availability</th>
+            <th>Qr Code</th>
+        </tr>
+        {% for i in q %}
+        <tr>
+            <td>{{i.slot_description}}</td>
+            <td>{{i.slot_status}}</td>
+            <td>{{i.aamount}}</td>
+            <td>{{i.location.location_name}}</td>
+            {% if i.slot_status == 'free' %}
+            <td><a href="/book/{{i.slot_id}}/{{i.aamount}}" class="btn btn-success">Book</a></td>
+            <td><img src="/static/{{i.qrcode}}" alt="" width="250px" /></td>
+            {% else %}
+            <td>Not Available</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+{% include 'footer.html' %}
