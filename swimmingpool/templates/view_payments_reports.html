@@ -1,0 +1,25 @@
+{% include 'admin_header.html' %}
+<br><br>
+<center>
+    <h1>Payment</h1>
+<table style="width: 1200px">
+    <tr>
+        <th>Bookid</th>
+        <th>Amount</th>
+        <th>Payment Mode</th>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+    {% for i in q %}
+    <tr>
+        <td>{{i.book_id}}</td>
+        <td>{{i.amount}}</td>
+        <td>{{i.mode_of_payment}}</td>
+        <td>{{i.date}}</td>
+        <td>{{i.status}}</td>
+    </tr>
+    {% endfor %}
+</table
+</center>
+
+{% include 'footer.html' %}

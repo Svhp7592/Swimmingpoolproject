@@ -1,0 +1,32 @@
+{% include 'user_header.html' %}
+<br />
+<center><h1>BOOK</h1></center>
+<center>
+    <form method="post" style="width: 800px">
+        <table>
+            <tr>
+                <th>start date</th>
+                <td><input type="date" name="start_date" /></td>
+            </tr>
+            <tr>
+                <th>start Time</th>
+                <td><input type="time" name="start_time" /></td>
+            </tr>
+            <!-- <tr>
+            <th>ending_date</th>
+            <td><input type="date" name="ending_date">
+        </tr>
+        <tr>
+            <th>ending_time</th>
+            <td><input type="time" name="ending_time">
+        </tr> -->
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" name="submit" value="Pay" class="btn btn-success" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
+
+{% include 'footer.html' %}

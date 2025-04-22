@@ -1,0 +1,31 @@
+{% include 'user_header.html' %}
+
+
+<form method="post">
+    <table>
+        <tr>
+            <th>Cardholder Name</th>
+            <td><input type="text" required></td>
+        </tr>
+        <tr>
+            <th>Card Number</th>
+            <td><input type="text" required></td>
+        </tr>
+        <tr>
+            
+            <th>Total Time  : </th>
+            <td>{{ days }} Days: {{ hours }} Hours: {{ minutes }} Minutes</td>
+        </tr>
+        <tr>
+
+            <th>Total Cost  : </th>
+            <td>{{ total_cost }}</td>
+
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><input type="submit" name="submit"></td>
+        </tr>
+    </table>
+</form>
+
+{% include 'footer.html' %}

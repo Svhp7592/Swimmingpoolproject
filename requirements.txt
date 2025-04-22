@@ -1,0 +1,5 @@
+django
+geopy
+qrcode
+requests
+psycopg2-binary

@@ -1,0 +1,62 @@
+{% include 'user_header.html' %}
+
+<br><br><br>
+
+<center>
+    <body>
+        <video id="qr-video" width="640" height="480" playsinline></video>
+        <div id="result"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.0/dist/jsQR.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const video = document.getElementById('qr-video');
+                const resultDiv = document.getElementById('result');
+        
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                        video.play();
+                        scanQRCode();
+                    })
+                    .catch((error) => {
+                        console.error('Error accessing camera:', error);
+                        resultDiv.innerText = 'Error accessing camera. Please check permissions.';
+                    });
+        
+                function scanQRCode() {
+                    const canvasElement = document.createElement('canvas');
+                    const canvas = canvasElement.getContext('2d');
+        
+                    video.addEventListener('loadeddata', () => {
+                        setInterval(() => {
+                            canvasElement.width = video.videoWidth;
+                            canvasElement.height = video.videoHeight;
+                            canvas.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        
+                            const imageData = canvas.getImageData(0, 0, video.videoWidth, video.videoHeight);
+                            const code = jsQR(imageData.data, imageData.width, imageData.height);
+        
+                            if (code && code.data) {
+                                resultDiv.innerText = 'QR Code detected: ' + code.data;
+        
+                                // Extract the book_id from the URL
+                                const bookId = window.location.pathname.split('/').pop();
+        
+                                // Redirect to another page after scanning the QR code
+                                window.location.href = `/occupied?qrData=${encodeURIComponent(code.data)}&book_id=${bookId}`;
+                            } else {
+                                resultDiv.innerText = 'No QR Code detected.';
+                            }
+                        }, 1000); // Adjust the interval as needed
+                    });
+                }
+            });
+        </script>
+        
+    </body>
+</center>
+
+<br><br><br>
+
+{% include 'footer.html' %}

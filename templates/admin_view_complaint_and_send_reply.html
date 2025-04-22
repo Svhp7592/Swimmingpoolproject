@@ -1,0 +1,68 @@
+{% include 'admin_header.html' %}
+<style>
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th,
+    td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+        background-color: rgb(26, 37, 39);
+        color: #ffffff;
+    }
+
+    tr:hover {
+        background-color: rgba(34, 31, 70, 0.108);
+    }
+
+    /* Responsive styles */
+    @media only screen and (max-width: 600px) {
+        table {
+            width: 100%;
+        }
+
+        th,
+        td {
+            display: block;
+            width: 100%;
+        }
+    }
+</style>
+<br /><br />
+<center>
+    <h1>View Complaint</h1>
+    <table style="width: 1200px">
+        <tr>
+            <th>User</th>
+            <th>Complaint</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        {% for i in q %}
+        <tr>
+            <td>{{i.user.fname}}</td>
+            <td>{{i.description}}</td>
+            <td>{{i.date}}</td>
+            <td>{{i.status}}</td>
+            {%if i.status == 'pending'%}
+            <td><a href="/send_reply/{{i.complaint_id}}" class="btn btn-info">Send Reply</a></td>
+            {%else%}
+            <td>{{i.solution}}</td>
+            {%endif%}
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+{% include 'footer.html' %}

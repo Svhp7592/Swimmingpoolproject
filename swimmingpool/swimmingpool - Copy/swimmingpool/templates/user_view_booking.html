@@ -1,0 +1,42 @@
+{% include 'user_header.html' %}
+<center>
+    <br />
+    <h1>View Booking</h1>
+    <table style="width: 1200px">
+        <tr>
+            <th>Start Date</th>
+            <th>Start Time</th>
+            <th>Ending Date</th>
+            <th>Ending Time</th>
+            <th>Amount</th>
+            <th>Slot Status</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        {% for i in q %}
+        <tr>
+            <td>{{i.starting_date}}</td>
+            <td>{{i.starting_time}}</td>
+            <td>{{i.ending_date}}</td>
+            <td>{{i.ending_time}}</td>
+            <td>{{i.amount}}</td>
+            <td>{{i.slot.slot_status}}</td>
+            <td>{{i.status}}</td>
+            {% if i.status == 'pending'%}
+            <td><a href="/scanner/{{i.book_id}}" class="btn btn-danger">Scan QR</a></td>
+            {% endif %} {% if i.status == 'occupied' %}
+            <td><a href="/pay/{{i.book_id}}/{{i.slot_id}}">Pay</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</center>
+
+{% include 'footer.html' %}
+
+<style>
+    th,
+    td {
+        text-align: center;
+    }
+</style>

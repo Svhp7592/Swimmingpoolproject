@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Slots</title>
+</head>
+<body>
+    <h1>Available Time Slots</h1>
+    <ul>
+        {% for slot in slots %}
+            <li>{{ slot.start_time }} - {{ slot.end_time }} {% if slot.is_booked %}(Booked){% endif %}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
